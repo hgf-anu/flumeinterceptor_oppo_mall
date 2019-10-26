@@ -10,10 +10,12 @@
  */
 package com.yaxin.flume.interceptor;
 
+import org.apache.flume.Context;
 import org.apache.flume.Event;
 import org.apache.flume.interceptor.Interceptor;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,23 +53,32 @@ public class LogETLInterceptor implements Interceptor{
 			if( LogUtils.valuateStart(log) ){
 				return event;
 			}
-
 		}else {
 			if(LogUtils.valuateEvent(log)){
 				return event;
 			}
-
 		}
-
+		//前面不符合条件的这里都返回NULL
 		return null;
 	}
 
 	/**
-	 * event集合处理
+	 * event集合处理,过滤得到符合要求的event
 	 */
 	@Override
-	public List< Event > intercept( List< Event > list ){
-		return null;
+	public List< Event > intercept( List< Event > events ){
+		//该集合存储正确的event
+		ArrayList< Event > interceptors = new ArrayList<>();
+
+		//对events进行遍历，每一个都使用单event进行验证
+		for( Event event : events ){
+			Event intercept = intercept(event);
+			//返回true的event放到一个集合里作为返回值
+			if(intercept!=null){
+				interceptors.add(event);
+			}
+		}
+		return interceptors;
 	}
 
 	/**
@@ -76,5 +87,21 @@ public class LogETLInterceptor implements Interceptor{
 	@Override
 	public void close(){
 
+	}
+
+	/**
+	* 构建静态内部类，方便类的生成[new]
+	*/
+	public static class Builder implements Interceptor.Builder{
+
+		@Override
+		public Interceptor build(){
+			return new LogETLInterceptor();
+		}
+
+		@Override
+		public void configure( Context context ){
+
+		}
 	}
 }

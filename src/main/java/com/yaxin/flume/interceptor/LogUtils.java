@@ -14,7 +14,7 @@ import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * 〈一句话功能简述〉<br>
- * 〈〉
+ * 进行简单的ETL操作。对数据的长度、数据格式是否符合要求等等
  *
  * @author hgf
  * @create 2019/10/27 0027
@@ -23,7 +23,7 @@ import org.apache.commons.lang.math.NumberUtils;
 public class LogUtils{
 
 	public static boolean valuateStart( String log ){
-		//log就是json串，为NULL就返回false
+		//log就是json串，为NULL就返回false,防止出现空指针异常
 		if( log == null ){
 			return false;
 		}
