@@ -28,7 +28,7 @@ public class LogUtils{
 			return false;
 		}
 		//开头不是“｛”或者不是“}”结尾就返回false，判断数据的完整性
-		if( log.trim().startsWith("{") || log.trim().endsWith("}") ){
+		if( !log.trim().startsWith("{") || !log.trim().endsWith("}") ){
 			return false;
 		}
 		return true;
@@ -49,14 +49,13 @@ public class LogUtils{
 
 		//3.先判断服务器时间
 		// 判断条件：（1）服务器时间的尾数是13位；（2）全是数字
-		if( logContents[0].length() != 13 || NumberUtils.isDigits(logContents[0]) ){
+		if( logContents[0].length() != 13 || !NumberUtils.isDigits(logContents[0]) ){
 			return false;
 		}
 		//4.判断JSON，大括号开头，大括号结尾
-		if(!logContents[1].trim().startsWith("{")||!logContents[1].trim().endsWith("}")){
+		if( !logContents[1].trim().startsWith("{") || !logContents[1].trim().endsWith("}") ){
 			return false;
 		}
-
 		return true;
 	}
 }

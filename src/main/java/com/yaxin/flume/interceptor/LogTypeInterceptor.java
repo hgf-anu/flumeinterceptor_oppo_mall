@@ -46,21 +46,23 @@ public class LogTypeInterceptor implements Interceptor{
 		//添加key和value
 
 		//3.向header里添加值
-		if(log.contains("start")){
+		if( log.contains("start") ){
 			//将数据标记为不同topic名字.比如有12张表，可能一张表一个topic
 			headers.put("topic","topic_start");
 		}else{
 			headers.put("topic","topic_event");
 		}
-		return null;
+		return event;
 	}
 
 	@Override
 	public List< Event > intercept( List< Event > events ){
 		//进一步解耦，使用额外的集合，防止源数据被修改
 		ArrayList< Event > interceptors = new ArrayList<>();
+
 		for( Event event : events ){
 			Event intercept1 = intercept(event);
+
 			interceptors.add(intercept1);
 		}
 		return interceptors;

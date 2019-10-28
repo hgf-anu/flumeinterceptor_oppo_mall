@@ -29,8 +29,8 @@ import java.util.List;
 public class LogETLInterceptor implements Interceptor{
 
 	/**
-	* 初始化
-	*/
+	 * 初始化
+	 */
 	@Override
 	public void initialize(){
 
@@ -47,14 +47,14 @@ public class LogETLInterceptor implements Interceptor{
 		String log = new String(body,Charset.forName("UTF-8"));
 		//2.校验：启动日志和事件日志
 		//其他信息一定要回避“start”【可以自己定义一个特定的符号代表启动日志】
-		if(log.contains("start")){
+		if( log.contains("start") ){
 			//注意：这里不要写大量的逻辑代码，抽取出工具类、方法的形式
 			//2.1校验启动日志
 			if( LogUtils.valuateStart(log) ){
 				return event;
 			}
-		}else {
-			if(LogUtils.valuateEvent(log)){
+		}else{
+			if( LogUtils.valuateEvent(log) ){
 				return event;
 			}
 		}
@@ -74,7 +74,7 @@ public class LogETLInterceptor implements Interceptor{
 		for( Event event : events ){
 			Event intercept = intercept(event);
 			//返回true的event放到一个集合里作为返回值
-			if(intercept!=null){
+			if( intercept != null ){
 				interceptors.add(event);
 			}
 		}
@@ -90,8 +90,8 @@ public class LogETLInterceptor implements Interceptor{
 	}
 
 	/**
-	* 构建静态内部类，方便类的生成[new]
-	*/
+	 * 构建静态内部类，方便类的生成[new]
+	 */
 	public static class Builder implements Interceptor.Builder{
 
 		@Override
